@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Profile Card</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+    integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  <style>
+    body {
+      height: 100vh;
+      background-image: url('background.jpg');
+      background-size: cover;
+      background-position: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0;
+    }
+
+    .card {
+      width: 300px;
+      height: 400px;
+      border-radius: 10px;
+      text-align: center;
+      background-color: rgba(36, 38, 40, 0.8);
+      overflow: hidden;
+      margin: 0 30px;
+      position: relative;
+    }
+
+    .card__img {
+      width: 120px;
+      height: 120px;
+      overflow: hidden;
+      transition: 0.25s;
+      margin: 0 auto;
+      transform: translateY(25px);
+      border-radius: 50%;
+      border: 4px solid #f2726a;
+      cursor: pointer;
+    }
+
+    .card__img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .card__img:hover {
+      width: 100%;
+      height: 100%;
+      border-radius: unset;
+      border: unset;
+      transform: unset;
+    }
+
+    h2 {
+      color: white;
+      margin-top: 40px;
+    }
+
+    p {
+      color: #f2726a;
+    }
+
+    .card__social a {
+      text-decoration: none;
+      color: white;
+      margin: 25px 20px 40px;
+      display: inline-block;
+      font-size: 18px;
+      transition: 0.25s;
+    }
+
+    .card__social a:hover {
+      color: #f2726a;
+    }
+
+    button {
+      outline: none;
+      border: none;
+      color: white;
+      background-color: transparent;
+      border: 1px solid #f2726a;
+      padding: 10px 20px;
+      border-radius: inherit;
+      cursor: pointer;
+      transition: 0.25s;
+    }
+
+    button:hover {
+      background-color: #f2726a;
+    }
+
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+
+    #qr {
+      width: 270px;
+      height: 350px;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="card__img">
+      <img src="avatar.jpg" alt="Profile Picture" />
+    </div>
+    <h2>Lê Khánh Duy</h2>
+    <div class="card__info">
+      <p>Tuổi: <span id="age"></span></p>
+    </div>
+    <div class="card__social">
+      <a target="_blank" href="https://www.facebook.com/kduy.2308">
+        <i class="fab fa-facebook-f"></i>
+      </a>
+      <a target="_blank" href="https://www.youtube.com/c/yourchannel">
+        <i class="fab fa-youtube"></i>
+      </a>
+      <a target="_blank" href="https://www.tiktok.com/@chill_mott_minh">
+        <i class="fab fa-tiktok"></i>
+      </a>
+      <a href="#" onclick="showBankAccount()">
+        <i class="fas fa-university"></i>
+      </a>
+      <a href="#" onclick="toggleQRCode(event)">
+        <i class="fas fa-heart"></i>
+      </a>
+    </div>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="hideQRCode(event)">
+    <img id="qr" src="QR.png" alt="QR Code" />
+  </div>
+
+  <script>
+    function calculateAge(birthday) {
+      const birthDate = new Date(birthday);
+      const today = new Date();
+      let age = today.getFullYear() - birthDate.getFullYear();
+      const m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    }
+
+    document.getElementById('age').innerText = calculateAge('2003-08-23');
+
+    function showBankAccount() {
+      alert('MB: 0949506100');
+    }
+
+    function toggleQRCode(event) {
+      event.stopPropagation();
+      const overlay = document.getElementById('overlay');
+      overlay.classList.add('active');
+    }
+
+    function hideQRCode(event) {
+      const qr = document.getElementById('qr');
+      if (!qr.contains(event.target)) {
+        const overlay = document.getElementById('overlay');
+        overlay.classList.remove('active');
+      }
+    }
+  </script>
+</body>
+</html>
