@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Hello nha >.< </title>
+  <title>Hello nha >.<</title>
   <link
     rel="stylesheet"
     href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
@@ -117,7 +117,7 @@
       display: flex;
     }
 
-    #qr {
+    #qr, #bank {
       width: 270px;
       height: 350px;
     }
@@ -131,18 +131,19 @@
     <h2>Lê Khánh Duy</h2>
     <div class="card__info">
       <p>Tuổi: <span id="age"></span></p>
+      <p>(Nhận chụp ảnh - Nhận feedback)</p>
     </div>
     <div class="card__social">
       <a target="_blank" href="https://www.facebook.com/kduy.2308">
         <i class="fab fa-facebook-f"></i>
       </a>
-      <a target="_blank" href="https://www.youtube.com/channel/UCTD755IcDPH-_fY1ENB-WTg">
-        <i class="fab fa-youtube"></i>
+      <a target="_blank" href="https://www.instagram.com/kduy.2308/">
+        <i class="fab fa-instagram"></i>
       </a>
       <a target="_blank" href="https://www.tiktok.com/@chill_mott_minh">
         <i class="fab fa-tiktok"></i>
       </a>
-      <a href="#" onclick="showBankAccount()">
+      <a href="#" onclick="toggleBankAccount(event)">
         <i class="fas fa-university"></i>
       </a>
       <a href="#" onclick="toggleQRCode(event)">
@@ -151,8 +152,9 @@
     </div>
   </div>
 
-  <div class="overlay" id="overlay" onclick="hideQRCode(event)">
+  <div class="overlay" id="overlay" onclick="hideOverlay(event)">
     <img id="qr" src="QR.png" alt="QR Code" />
+    <img id="bank" src="nganhang.jpg" alt="Bank Account" style="display:none;" />
   </div>
 
   <script>
@@ -169,20 +171,27 @@
 
     document.getElementById('age').innerText = calculateAge('2003-08-23');
 
-    function showBankAccount() {
-      alert('Vietcombank: 1020397934');
-    }
-
     function toggleQRCode(event) {
       event.stopPropagation();
       const overlay = document.getElementById('overlay');
+      document.getElementById('qr').style.display = 'block';
+      document.getElementById('bank').style.display = 'none';
       overlay.classList.add('active');
     }
 
-    function hideQRCode(event) {
+    function toggleBankAccount(event) {
+      event.stopPropagation();
+      const overlay = document.getElementById('overlay');
+      document.getElementById('qr').style.display = 'none';
+      document.getElementById('bank').style.display = 'block';
+      overlay.classList.add('active');
+    }
+
+    function hideOverlay(event) {
+      const overlay = document.getElementById('overlay');
       const qr = document.getElementById('qr');
-      if (!qr.contains(event.target)) {
-        const overlay = document.getElementById('overlay');
+      const bank = document.getElementById('bank');
+      if (!qr.contains(event.target) && !bank.contains(event.target)) {
         overlay.classList.remove('active');
       }
     }
