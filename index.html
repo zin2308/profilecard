@@ -160,11 +160,11 @@
         <i class="fas fa-university"></i>
       </a>
       <a href="#" onclick="toggleQRCode(event)">
-        <i class="fas fa-heart"></i>
+        <i class="fas fa-phone-alt"></i>
       </a>
     </div>
     <div class="card__button">
-      <button onclick="showBankAccount()">Contact Me</button>
+      <button onclick="navigateToAlbum()">MY ALBUM</button>
     </div>
   </div>
 
@@ -212,8 +212,8 @@
       }
     }
 
-    function showBankAccount() {
-      alert('Số điện thoại: 0777 404 733');
+    function navigateToAlbum() {
+      window.location.href = 'album.html';
     }
   </script>
 </body>
