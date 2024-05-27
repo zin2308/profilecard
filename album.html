@@ -131,9 +131,16 @@
             cursor: pointer;
             border-radius: 50%;
             transition: background-color 0.3s;
+            outline: none; /* Prevent default focus outline */
+        }
+        #image-modal-nav button:focus {
+            outline: none; /* Prevent default focus outline */
         }
         #image-modal-nav button:hover {
             background-color: #007BFF;
+        }
+        #image-modal-nav button:focus {
+            box-shadow: 0 0 0 2px #007BFF;
         }
         .icon-phone {
             font-size: 28px;
@@ -182,6 +189,11 @@
         #qr-modal-close button:hover {
             background-color: #007BFF;
         }
+        .image-transition {
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transform: scale(0.9);
+            opacity: 0;
+        }
     </style>
 </head>
 <body>
@@ -215,7 +227,7 @@
         </div>
     </div>
     <div class="gallery">
-        <img src="Album/A1 (1).jpg" alt="Gallery Image 1" onclick="openImageModal(this, 0)">
+         <img src="Album/A1 (1).jpg" alt="Gallery Image 1" onclick="openImageModal(this, 0)">
         <img src="Album/A1 (2).JPG" alt="Gallery Image 2" onclick="openImageModal(this, 1)">
         <img src="Album/A1 (3).JPG" alt="Gallery Image 3" onclick="openImageModal(this, 2)">
         <img src="Album/A1 (4).JPG" alt="Gallery Image 4" onclick="openImageModal(this, 3)">
@@ -258,42 +270,48 @@
     <script>
         var currentImageIndex = 0;
         var images = document.querySelectorAll('.gallery img');
+        var modalImage = document.getElementById('modal-image');
+        var prevButton = document.querySelector('#image-modal-nav button:first-child');
+        var nextButton = document.querySelector('#image-modal-nav button:last-child');
 
         function openImageModal(imageElement, index) {
             var modal = document.getElementById('image-modal');
-            var modalImage = document.getElementById('modal-image');
             modal.style.display = 'flex';
             modalImage.src = imageElement.src;
             currentImageIndex = index;
-            document.addEventListener('keydown', handleKeydown);
+            modalImage.classList.add('image-transition');
+            setTimeout(function() {
+                modalImage.classList.remove('image-transition');
+            }, 20);
         }
 
         function closeImageModal(event) {
             if (event.target.id !== 'modal-image' && event.target.tagName !== 'BUTTON') {
                 var modal = document.getElementById('image-modal');
                 modal.style.display = 'none';
-                document.removeEventListener('keydown', handleKeydown);
             }
         }
 
         function previousImage(event) {
             event.stopPropagation();
             currentImageIndex = (currentImageIndex - 1 + images.length) % images.length;
-            document.getElementById('modal-image').src = images[currentImageIndex].src;
+            modalImage.src = images[currentImageIndex].src;
+            modalImage.classList.add('image-transition');
+            setTimeout(function() {
+                modalImage.classList.remove('image-transition');
+            }, 20);
+            prevButton.blur(); // Remove focus after clicking
         }
 
         function nextImage(event) {
             event.stopPropagation();
             currentImageIndex = (currentImageIndex + 1) % images.length;
-            document.getElementById('modal-image').src = images[currentImageIndex].src;
-        }
-
-        function handleKeydown(event) {
-            if (event.key === 'ArrowLeft') {
-                previousImage(event);
-            } else if (event.key === 'ArrowRight') {
-                nextImage(event);
-            }
+            modalImage.src = images[currentImageIndex].src;
+            modalImage.classList.add('image-transition');
+            setTimeout(function() {
+                modalImage.classList.remove('image-transition');
+            }, 20);
+            nextButton.blur(); // Remove focus after clicking
         }
 
         function toggleQRModal() {
@@ -309,6 +327,16 @@
             var phoneIcon = document.getElementById('phone-icon');
             phoneIcon.classList.remove('clicked');
         }
+
+        document.addEventListener('keydown', function(event) {
+            if (document.getElementById('image-modal').style.display === 'flex') {
+                if (event.key === 'ArrowRight') {
+                    nextImage(event);
+                } else if (event.key === 'ArrowLeft') {
+                    previousImage(event);
+                }
+            }
+        });
     </script>
 </body>
 </html>
