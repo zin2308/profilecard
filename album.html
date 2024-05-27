@@ -216,7 +216,7 @@
     </div>
     <div class="gallery">
         <img src="Album/A1 (1).JPG" alt="Gallery Image 1" onclick="openImageModal(this, 0)">
-        <img src="Album/A1 (2).png" alt="Gallery Image 2" onclick="openImageModal(this, 1)">
+        <img src="Album/A1 (2).JPG" alt="Gallery Image 2" onclick="openImageModal(this, 1)">
         <img src="Album/A1 (3).JPG" alt="Gallery Image 3" onclick="openImageModal(this, 2)">
         <img src="Album/A1 (4).JPG" alt="Gallery Image 4" onclick="openImageModal(this, 3)">
         <img src="Album/A1 (5).JPG" alt="Gallery Image 5" onclick="openImageModal(this, 4)">
@@ -224,7 +224,7 @@
         <img src="Album/A1 (7).JPG" alt="Gallery Image 7" onclick="openImageModal(this, 6)">
         <img src="Album/A1 (8).JPG" alt="Gallery Image 8" onclick="openImageModal(this, 7)">
         <img src="Album/A1 (9).JPG" alt="Gallery Image 9" onclick="openImageModal(this, 8)">
-        <img src="Album/A1 (10).png" alt="Gallery Image 10" onclick="openImageModal(this, 9)">
+        <img src="Album/A1 (10).JPG" alt="Gallery Image 10" onclick="openImageModal(this, 9)">
         <img src="Album/A1 (11).JPG" alt="Gallery Image 11" onclick="openImageModal(this, 10)">
         <img src="Album/A1 (12).JPG" alt="Gallery Image 12" onclick="openImageModal(this, 11)">
         <img src="Album/A1 (13).JPG" alt="Gallery Image 13" onclick="openImageModal(this, 12)">
@@ -265,12 +265,14 @@
             modal.style.display = 'flex';
             modalImage.src = imageElement.src;
             currentImageIndex = index;
+            document.addEventListener('keydown', handleKeydown);
         }
 
         function closeImageModal(event) {
             if (event.target.id !== 'modal-image' && event.target.tagName !== 'BUTTON') {
                 var modal = document.getElementById('image-modal');
                 modal.style.display = 'none';
+                document.removeEventListener('keydown', handleKeydown);
             }
         }
 
@@ -284,6 +286,14 @@
             event.stopPropagation();
             currentImageIndex = (currentImageIndex + 1) % images.length;
             document.getElementById('modal-image').src = images[currentImageIndex].src;
+        }
+
+        function handleKeydown(event) {
+            if (event.key === 'ArrowLeft') {
+                previousImage(event);
+            } else if (event.key === 'ArrowRight') {
+                nextImage(event);
+            }
         }
 
         function toggleQRModal() {
